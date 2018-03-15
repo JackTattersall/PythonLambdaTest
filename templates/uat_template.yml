@@ -1,0 +1,219 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform:
+- AWS::Serverless-2016-10-31
+- AWS::CodeStar
+
+Parameters:
+  ProjectId:
+    Type: String
+    Description: CodeStar projectId used to associate new resources to team members
+
+Resources:
+  ApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      DefinitionBody:
+        swagger: "2.0"
+        info:
+          description: "Service for creating Cliverton trades"
+          version: "1.0.0"
+          title: "Cliverton Web Service"
+        basePath: "/"
+        schemes:
+        - "http"
+        paths:
+          "/prospect":
+            post:
+              tags:
+              - "prospect"
+              summary: "Create a prospect"
+              operationId: "addProspect"
+              consumes:
+              - "application/json"
+              produces:
+              - "application/json"
+              parameters:
+              - in: "body"
+                name: "body"
+                description: "Prospect object to be saved to OGI"
+                required: true
+                schema:
+                  $ref: "#/definitions/Prospect"
+              responses:
+                '405':
+                  description: "Invalid input"
+                '200':
+                  description: "Prospect Reference"
+                  schema:
+                    $ref: "#/definitions/ProspectResponse"
+              x-amazon-apigateway-integration:
+                  httpMethod: POST
+                  type: aws_proxy
+                  uri:
+                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProspectFunction.Arn}/invocations
+          "/risk":
+            post:
+              tags:
+              - "risk"
+              summary: "Add policy risk to a prospect"
+              operationId: "addRisk"
+              consumes:
+              - "application/json"
+              produces:
+              - "application/json"
+              parameters:
+              - in: "body"
+                name: "body"
+                description: "Risk object to saved to a prospect"
+                required: true
+                schema:
+                  $ref: "#/definitions/Risk"
+              responses:
+                '405':
+                  description: "Invalid input"
+                '200':
+                  description: "Policy Object"
+                  schema:
+                    $ref: "#/definitions/RiskResponse"
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${RiskFunction.Arn}/invocations
+        definitions:
+          Prospect:
+            type: "object"
+            additionalProperties:
+              False
+            required:
+            - "Name"
+            - "Pcode"
+            - "Email"
+            - "Tel"
+            - "Addr1"
+            properties:
+              Name:
+                type: "string"
+                minLength: 1
+                maxLength: 30
+              Pcode:
+                type: "string"
+                minLength: 6
+                maxLength: 9
+              Email:
+                type: "string"
+                minLength: 1
+                maxLength: 50
+              Tel:
+                type: "string"
+                minLength: 1
+                maxLength: 20
+              Addr1:
+                type: "string"
+                minLength: 1
+                maxLength: 30
+              Addr2:
+                type: "string"
+                minLength: 1
+                maxLength: 30
+              Addr3:
+                type: "string"
+                minLength: 1
+                maxLength: 30
+              Addr4:
+                type: "string"
+                minLength: 1
+                maxLength: 30
+          ProspectResponse:
+            type: "object"
+            properties:
+              Refno:
+                type: "string"
+              message:
+                type: "string"
+          Risk:
+            type: "object"
+            additionalProperties:
+              False
+            required:
+            - "Ptype"
+            - "Risk"
+            - "Refno"
+            properties:
+              Refno:
+                type: "string"
+                minLength: 1
+                maxLength: 7
+              Ptype:
+                type: "string"
+                enum: ["DG", "PT", "PM"]
+              Risk:
+                type: "object"
+                additionalProperties:
+                  False
+                required:
+                - "RsFrame"
+                - "RsFrame2"
+                properties:
+                  RsFrame:
+                    type: "object"
+                    additionalProperties:
+                      False
+                    properties:
+                      indemLvl:
+                        type: "string"
+                      pubLib:
+                        type: "string"
+                  RsFrame2:
+                    type: "object"
+                    additionalProperties:
+                      False
+                    properties:
+                      indemLvl:
+                        type: "string"
+                      pubLib:
+                        type: "string"
+          RiskResponse:
+            type: "object"
+            properties:
+              Refno:
+                type: "string"
+              Polref:
+                type: "string"
+              Premium:
+                type: "string"
+              message:
+                type: "string"
+  ProspectFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: prospect_handler.handler
+      Runtime: python3.6
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: ApiGateway
+            Path: /prospect
+            Method: post
+  RiskFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: risk_handler.handler
+      Runtime: python3.6
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        PostEvent:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: ApiGateway
+            Path: /risk
+            Method: post
