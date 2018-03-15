@@ -1,4 +1,4 @@
-from hello import handler
+from prospect_handler import handler
 
 
 def test_hello_handler():

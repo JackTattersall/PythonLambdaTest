@@ -12,7 +12,7 @@ This sample includes:
 * README.md - this file
 * buildspec.yml - this file is used by AWS CodeBuild to package your
   application for deployment to AWS Lambda
-* index.py - this file contains the sample Python code for the web service
+* risk_handler.py - this file contains the sample Python code for the web service
 * template.yml - this file contains the AWS Serverless Application Model (AWS SAM) used
   by AWS CloudFormation to deploy your application to AWS Lambda and Amazon API
   Gateway.
@@ -23,7 +23,7 @@ What Do I Do Next?
 ------------------
 
 If you have checked out a local copy of your repository you can start making changes
-to the sample code.  We suggest making a small change to index.py first, so you can
+to the sample code.  We suggest making a small change to risk_handler.py first, so you can
 see how changes pushed to your project's repository are automatically picked up by your
 project pipeline and deployed to AWS Lambda and Amazon API Gateway. (You can watch the pipeline
 progress on your AWS CodeStar project dashboard.)Once you've seen how that works,
