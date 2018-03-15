@@ -4,5 +4,5 @@ import json
 def handler(event, context):
     data = event['body']
     return {'statusCode': 200,
-            'body': json.dumps(data),
+            'body': data,
             'headers': {'Content-Type': 'application/json'}}
