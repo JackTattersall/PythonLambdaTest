@@ -7,19 +7,19 @@ class TestHandlerCase(unittest.TestCase):
 
     def test_hello_world_response(self):
         print("testing response.")
-        result = risk_handler.handler(None, None)
+        result = risk_handler.handler({"body": "test body"}, None)
         print(result)
         self.assertEqual(result['statusCode'], 200)
         self.assertEqual(result['headers']['Content-Type'], 'application/json')
-        #self.assertIn('Hello World', result['body'])
+        self.assertIn('test body', result['body'])
 
     def test_hello_response(self):
         print("testing response.")
-        result = prospect_handler.handler(None, None)
+        result = prospect_handler.handler({"body": "test body"}, None)
         print(result)
         self.assertEqual(result['statusCode'], 200)
         self.assertEqual(result['headers']['Content-Type'], 'application/json')
-        # self.assertIn('Hello World', result['body'])
+        self.assertIn('test body', result['body'])
 
         # event = {
         #     'pathParameters': {
