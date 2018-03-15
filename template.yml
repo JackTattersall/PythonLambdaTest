@@ -15,7 +15,7 @@ Resources:
       StageName: prod
       DefinitionBody:
         swagger: 2.0
-        info:
+        info: "Some information"
         description: "Service for creating Cliverton trades"
         version: "1.0.0"
         title: "Cliverton Web Service"
