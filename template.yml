@@ -24,7 +24,7 @@ Resources:
         - "http"
         paths:
           "/prospect":
-            post:
+            x-amazon-apigateway-any-method:
               tags:
               - "prospect"
               summary: "Create a prospect"
@@ -47,8 +47,13 @@ Resources:
                   description: "Prospect Reference"
                   schema:
                     $ref: "#/definitions/ProspectResponse"
+              x-amazon-apigateway-integration:
+                  httpMethod: POST
+                  type: aws_proxy
+                  uri:
+                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MyLambdaFunction.Arn}/invocations
           "/risk":
-            post:
+            x-amazon-apigateway-any-method:
               tags:
               - "risk"
               summary: "Add policy risk to a prospect"
@@ -71,6 +76,11 @@ Resources:
                   description: "Policy Object"
                   schema:
                     $ref: "#/definitions/RiskResponse"
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MyLambdaFunction.Arn}/invocations
         definitions:
           Prospect:
             type: "object"
