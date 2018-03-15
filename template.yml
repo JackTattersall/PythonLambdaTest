@@ -14,7 +14,7 @@ Resources:
     Properties:
       StageName: prod
       DefinitionBody:
-        swagger: 2.0
+        swagger: "2.0"
         info:
           description: "Service for creating Cliverton trades"
           version: "1.0.0"
@@ -85,55 +85,43 @@ Resources:
             properties:
               Name:
                 type: "string"
-                example: "Bob Test"
                 minLength: 1
                 maxLength: 30
               Pcode:
                 type: "string"
-                example: "NE2 3EA"
                 minLength: 6
                 maxLength: 9
               Email:
                 type: "string"
-                example: "Bob@Test.co.uk"
                 minLength: 1
                 maxLength: 50
               Tel:
                 type: "string"
-                example: "07771231231"
                 minLength: 1
                 maxLength: 20
               Addr1:
                 type: "string"
-                example: "7 Test Lane"
                 minLength: 1
                 maxLength: 30
               Addr2:
                 type: "string"
-                example: "Testershire"
                 minLength: 1
                 maxLength: 30
               Addr3:
                 type: "string"
-                example: "Greater Testershire"
                 minLength: 1
                 maxLength: 30
               Addr4:
                 type: "string"
-                example: "United Testland"
                 minLength: 1
                 maxLength: 30
-            xml:
-              name: "Prospect"
           ProspectResponse:
             type: "object"
             properties:
               Refno:
                 type: "string"
-                example: "BABX001"
               message:
                 type: "string"
-                example: "Prospect successfully added"
           Risk:
             type: "object"
             additionalProperties:
@@ -147,7 +135,6 @@ Resources:
                 type: "string"
                 minLength: 1
                 maxLength: 7
-                example: "BABX001"
               Ptype:
                 type: "string"
                 enum: ["DG", "PT", "PM"]
@@ -182,16 +169,12 @@ Resources:
             properties:
               Refno:
                 type: "string"
-                example: "BABX001"
               Polref:
                 type: "string"
-                example: "BABX001DG01"
               Premium:
                 type: "string"
-                example: "10000"
               message:
                 type: "string"
-                example: "Risk successfully added"
   HelloWorld:
     Type: AWS::Serverless::Function
     Properties:
