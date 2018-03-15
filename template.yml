@@ -23,7 +23,7 @@ Resources:
         schemes:
         - "http"
         paths:
-          /prospect:
+          "/prospect":
             post:
               tags:
               - "prospect"
@@ -47,7 +47,7 @@ Resources:
                   description: "Prospect Reference"
                   schema:
                     $ref: "#/definitions/ProspectResponse"
-          /risk:
+          "/risk":
             post:
               tags:
               - "risk"
@@ -175,7 +175,7 @@ Resources:
                 type: "string"
               message:
                 type: "string"
-  HelloWorld:
+  ProspectFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: prospect_handler.handler
@@ -187,10 +187,11 @@ Resources:
         PostEvent:
           Type: Api
           Properties:
-            RestApiId: !Ref ApiGateway
+            RestApiId:
+              Ref: ApiGateway
             Path: /prospect
             Method: post
-  Hello:
+  RiskFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: risk_handler.handler
@@ -202,6 +203,7 @@ Resources:
         PostEvent:
           Type: Api
           Properties:
-            RestApiId: !Ref ApiGateway
+            RestApiId:
+              Ref: ApiGateway
             Path: /risk
             Method: post
