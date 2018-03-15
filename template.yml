@@ -15,11 +15,10 @@ Resources:
       StageName: prod
       DefinitionBody:
         swagger: 2.0
-        info: "Some information"
-        description: "Service for creating Cliverton trades"
-        version: "1.0.0"
-        title: "Cliverton Web Service"
-        host: "cliverton.web-service"
+        info:
+          description: "Service for creating Cliverton trades"
+          version: "1.0.0"
+          title: "Cliverton Web Service"
         basePath: "/"
         schemes:
         - "http"
