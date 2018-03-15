@@ -42,9 +42,9 @@ Resources:
                 schema:
                   $ref: "#/definitions/Prospect"
               responses:
-                405:
+                '405':
                   description: "Invalid input"
-                200:
+                '200':
                   description: "Prospect Reference"
                   schema:
                     $ref: "#/definitions/ProspectResponse"
@@ -66,9 +66,9 @@ Resources:
                 schema:
                   $ref: "#/definitions/Risk"
               responses:
-                405:
+                '405':
                   description: "Invalid input"
-                200:
+                '200':
                   description: "Policy Object"
                   schema:
                     $ref: "#/definitions/RiskResponse"
