@@ -24,7 +24,7 @@ Resources:
         - "http"
         paths:
           "/prospect":
-            x-amazon-apigateway-any-method:
+            post:
               tags:
               - "prospect"
               summary: "Create a prospect"
@@ -53,7 +53,7 @@ Resources:
                   uri:
                     Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProspectFunction.Arn}/invocations
           "/risk":
-            x-amazon-apigateway-any-method:
+            post:
               tags:
               - "risk"
               summary: "Add policy risk to a prospect"
