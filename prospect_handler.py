@@ -6,6 +6,6 @@ def handler(event, context):
         'body': data,
         'headers': {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '92.5.161.236'
+            'Access-Control-Allow-Origin': 'www.dave.com'
         }
     }
