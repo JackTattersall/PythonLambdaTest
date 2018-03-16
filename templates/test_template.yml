@@ -206,6 +206,7 @@ Resources:
     Properties:
       Handler: risk_handler.handler
       Runtime: python3.6
+      CodeUri: s3://<bucket>/api_backend.zip
       Role:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
