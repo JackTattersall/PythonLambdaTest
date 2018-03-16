@@ -206,7 +206,7 @@ Resources:
     Properties:
       Handler: risk_handler.handler
       Runtime: python3.6
-      CodeUri: $S3_BUCKET
+      CodeUri: ../
       Role:
         Fn::ImportValue:
           !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
