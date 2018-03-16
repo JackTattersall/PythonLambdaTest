@@ -10,7 +10,7 @@ Parameters:
 
 Globals:
   Api:
-    Cors: "'92.5.161.236'"
+    Cors: "'95.5.161.236'"
     MethodSettings: [{
       # Turn on Info logging
 #      "LoggingLevel": "INFO",
