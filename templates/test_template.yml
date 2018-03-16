@@ -16,9 +16,9 @@ Resources:
       DefinitionBody:
         swagger: "2.0"
         info:
-          description: "Service for creating Cliverton trades"
+          description: "We service API test/development"
           version: "1.0.0"
-          title: "Cliverton Web Service"
+          title: "Cliverton Test"
         basePath: "/"
         schemes:
         - "http"
