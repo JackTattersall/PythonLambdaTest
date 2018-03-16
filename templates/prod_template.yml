@@ -18,8 +18,8 @@ Globals:
       # Enable Metrics
       "MetricsEnabled": True,
 
-      "ThrottlingBurstLimit": 5
-      "ThrottlingRateLimit": 10
+      "ThrottlingBurstLimit": 5,
+      "ThrottlingRateLimit": 10,
 
       # On all Paths & methods
       "ResourcePath": "/*",
