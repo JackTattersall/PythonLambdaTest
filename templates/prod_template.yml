@@ -13,10 +13,6 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: prod
-      MethodSettings: [{
-        "ThrottlingRateLimit": 10,
-        "ThrottlingBurstLimit": 5
-      }]
       DefinitionBody:
         swagger: "2.0"
         info:
@@ -29,6 +25,10 @@ Resources:
         paths:
           "/prospect":
             post:
+              MethodSettings: [{
+                "ThrottlingRateLimit": 10,
+                "ThrottlingBurstLimit": 5
+              }]
               tags:
               - "prospect"
               summary: "Create a prospect"
