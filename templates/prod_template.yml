@@ -13,10 +13,10 @@ Globals:
     Cors: "'194.176.64.84'"
     MethodSettings: [{
       # Turn on Info logging
-      "LoggingLevel": "INFO",
+#      "LoggingLevel": "INFO",
 
       # Enable Metrics
-      "MetricsEnabled": True,
+#      "MetricsEnabled": True,
 
       "ThrottlingBurstLimit": 5,
       "ThrottlingRateLimit": 10,
