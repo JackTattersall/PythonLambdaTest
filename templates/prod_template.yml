@@ -8,6 +8,24 @@ Parameters:
     Type: String
     Description: CodeStar projectId used to associate new resources to team members
 
+Globals:
+  Api:
+    Cors: "'194.176.64.84'"
+    MethodSettings: [{
+      # Turn on Info logging
+      "LoggingLevel": "INFO",
+
+      # Enable Metrics
+      "MetricsEnabled": True,
+
+      "ThrottlingBurstLimit": 5
+      "ThrottlingRateLimit": 10
+
+      # On all Paths & methods
+      "ResourcePath": "/*",
+      "HttpMethod": "*",
+    }]
+
 Resources:
   ApiGateway:
     Type: AWS::Serverless::Api
