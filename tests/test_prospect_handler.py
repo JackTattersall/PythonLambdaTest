@@ -13,7 +13,8 @@ def test_hello_handler():
     expected = {
         'body': '{"output": "Hello testname"}',
         'headers': {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '92.5.161.236'
         },
         'statusCode': 200
     }

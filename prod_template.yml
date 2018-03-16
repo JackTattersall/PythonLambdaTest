@@ -8,6 +8,24 @@ Parameters:
     Type: String
     Description: CodeStar projectId used to associate new resources to team members
 
+Globals:
+  Api:
+    Cors: "'92.5.161.236'"
+    MethodSettings: [{
+      # Turn on Info logging
+#      "LoggingLevel": "INFO",
+
+      # Enable Metrics
+#      "MetricsEnabled": True,
+
+      "ThrottlingBurstLimit": 5,
+      "ThrottlingRateLimit": 10,
+
+      # On all Paths & methods
+      "ResourcePath": "/*",
+      "HttpMethod": "*",
+    }]
+
 Resources:
   ApiGateway:
     Type: AWS::Serverless::Api
@@ -16,9 +34,9 @@ Resources:
       DefinitionBody:
         swagger: "2.0"
         info:
-          description: "We service API UAT"
+          description: "We service API production."
           version: "1.0.0"
-          title: "Cliverton UAT"
+          title: "Cliverton Production"
         basePath: "/"
         schemes:
         - "http"

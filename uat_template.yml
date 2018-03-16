@@ -10,7 +10,7 @@ Parameters:
 
 Globals:
   Api:
-    Cors: "'194.176.64.84'"
+    Cors: "'92.5.161.236'"
     MethodSettings: [{
       # Turn on Info logging
 #      "LoggingLevel": "INFO",
@@ -34,9 +34,9 @@ Resources:
       DefinitionBody:
         swagger: "2.0"
         info:
-          description: "We service API production."
+          description: "We service API UAT"
           version: "1.0.0"
-          title: "Cliverton Production"
+          title: "Cliverton UAT"
         basePath: "/"
         schemes:
         - "http"
