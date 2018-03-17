@@ -21,24 +21,6 @@ class TestHandlerCase(unittest.TestCase):
         self.assertEqual(result['headers']['Content-Type'], 'application/json')
         self.assertIn('test body', result['body'])
 
-        # event = {
-        #     'pathParameters': {
-        #         'name': 'testname'
-        #     }
-        # }
-        #
-        # context = {}
-        #
-        # expected = {
-        #     'body': '{"output": "Hello testname"}',
-        #     'headers': {
-        #         'Content-Type': 'application/json'
-        #     },
-        #     'statusCode': 200
-        # }
-        #
-        # self.assertEqual(prospect_handler.handler(event, context), expected)
-
 
 if __name__ == '__main__':
     unittest.main()

@@ -8,6 +8,7 @@ def handler(event, context):
         'body': data,
         'headers': {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': 'www.dave.com'
+            'Access-Control-Allow-Origin': 'www.dave.com',
+            'Access-Control-Allow-Methods': 'OPTION,POST'
         }
     }
