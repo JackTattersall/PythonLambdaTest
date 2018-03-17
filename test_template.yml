@@ -75,17 +75,21 @@ Resources:
                   schema:
                     $ref: "#/definitions/ProspectResponse"
               x-amazon-apigateway-integration:
-                  httpMethod: POST
-                  type: aws_proxy
+                httpMethod: POST
+                type: aws_proxy
+                responses:
                   default:
                     statusCode: 200
                     responseParameters:
                       method.response.header.Access-Control-Allow-Origin: "'www.dave.com'"
                       method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
-                  passthroughBehavior: when_no_match
-                  uri:
-                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProspectFunction.Arn}/invocations
+                passthroughBehavior: when_no_match
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                type: mock
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProspectFunction.Arn}/invocations
           "/risk":
             post:
               tags:
