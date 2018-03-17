@@ -8,23 +8,23 @@ Parameters:
     Type: String
     Description: CodeStar projectId used to associate new resources to team members
 
-Globals:
-  Api:
-    Cors: "'www.dave.com'"
-    MethodSettings: [{
-      # Turn on Info logging
-#      "LoggingLevel": "INFO",
-
-      # Enable Metrics
-#      "MetricsEnabled": True,
-
-      "ThrottlingBurstLimit": 5,
-      "ThrottlingRateLimit": 10,
-
-      # On all Paths & methods
-      "ResourcePath": "/*",
-      "HttpMethod": "*",
-    }]
+#Globals:
+#  Api:
+#    Cors: "'www.dave.com'"
+#    MethodSettings: [{
+#      # Turn on Info logging
+##      "LoggingLevel": "INFO",
+#
+#      # Enable Metrics
+##      "MetricsEnabled": True,
+#
+#      "ThrottlingBurstLimit": 5,
+#      "ThrottlingRateLimit": 10,
+#
+#      # On all Paths & methods
+#      "ResourcePath": "/*",
+#      "HttpMethod": "*",
+#    }]
 
 Resources:
   ApiGateway:
@@ -77,6 +77,13 @@ Resources:
               x-amazon-apigateway-integration:
                   httpMethod: POST
                   type: aws_proxy
+                  default:
+                    statusCode: 200
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Origin: "'www.dave.com'"
+                      method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token'"
+                  passthroughBehavior: when_no_match
                   uri:
                     Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProspectFunction.Arn}/invocations
           "/risk":
