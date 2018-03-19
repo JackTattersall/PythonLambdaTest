@@ -1,4 +1,5 @@
 import jwt
+import json
 
 
 def handler(event, context):
@@ -11,10 +12,10 @@ def handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': {
+        'body': json.dumps({
             'person': data,
             'jwt': decoded_jwt or ""
-        },
+        }),
         'headers': {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': 'www.dave.com',

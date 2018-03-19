@@ -10,7 +10,7 @@ class TestHandlerCase(unittest.TestCase):
         print(result)
         self.assertEqual(result['statusCode'], 200)
         self.assertEqual(result['headers']['Content-Type'], 'application/json')
-        self.assertIn('test body', result['body']['person'])
+        self.assertEqual('{"person": "test body", "jwt": ""}', result['body'])
 
     def test_hello_response(self):
         print("testing response.")
@@ -18,7 +18,7 @@ class TestHandlerCase(unittest.TestCase):
         print(result)
         self.assertEqual(result['statusCode'], 200)
         self.assertEqual(result['headers']['Content-Type'], 'application/json')
-        self.assertIn('test body', result['body']['person'])
+        self.assertEqual('{"person": "test body", "jwt": ""}', result['body'])
 
 
 if __name__ == '__main__':
