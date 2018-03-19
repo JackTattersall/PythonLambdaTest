@@ -101,12 +101,15 @@ Resources:
                 schema:
                   $ref: "#/definitions/Risk"
               responses:
-                '405':
-                  description: "Invalid input"
                 '200':
-                  description: "Policy Object"
-                  schema:
-                    $ref: "#/definitions/RiskResponse"
+                  description: Default response for CORS method
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: "string"
+                    Access-Control-Allow-Methods:
+                      type: "string"
+                    Access-Control-Allow-Origin:
+                      type: "string"
               x-amazon-apigateway-integration:
                 httpMethod: POST
                 type: aws_proxy

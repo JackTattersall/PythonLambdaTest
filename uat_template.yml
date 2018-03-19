@@ -40,6 +40,14 @@ Resources:
         basePath: "/"
         schemes:
         - "http"
+        x-amazon-apigateway-request-validators :
+          full:
+            validateRequestBody: true
+            validateRequestParameters: true
+          body-only:
+            validateRequestBody: true
+            validateRequestParameters: false
+        x-amazon-apigateway-request-validator: "full"
         paths:
           "/prospect":
             post:
@@ -51,6 +59,7 @@ Resources:
               - "application/json"
               produces:
               - "application/json"
+              x-amazon-apigateway-request-validator: "body-only"
               parameters:
               - in: "body"
                 name: "body"
@@ -59,12 +68,15 @@ Resources:
                 schema:
                   $ref: "#/definitions/Prospect"
               responses:
-                '405':
-                  description: "Invalid input"
                 '200':
-                  description: "Prospect Reference"
-                  schema:
-                    $ref: "#/definitions/ProspectResponse"
+                  description: Default response for CORS method
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: "string"
+                    Access-Control-Allow-Methods:
+                      type: "string"
+                    Access-Control-Allow-Origin:
+                      type: "string"
               x-amazon-apigateway-integration:
                   httpMethod: POST
                   type: aws_proxy
@@ -80,6 +92,7 @@ Resources:
               - "application/json"
               produces:
               - "application/json"
+              x-amazon-apigateway-request-validator: "body-only"
               parameters:
               - in: "body"
                 name: "body"
@@ -88,12 +101,15 @@ Resources:
                 schema:
                   $ref: "#/definitions/Risk"
               responses:
-                '405':
-                  description: "Invalid input"
                 '200':
-                  description: "Policy Object"
-                  schema:
-                    $ref: "#/definitions/RiskResponse"
+                  description: Default response for CORS method
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: "string"
+                    Access-Control-Allow-Methods:
+                      type: "string"
+                    Access-Control-Allow-Origin:
+                      type: "string"
               x-amazon-apigateway-integration:
                 httpMethod: POST
                 type: aws_proxy
