@@ -3,7 +3,7 @@ import json
 
 
 def handler(event, context):
-    data = event['body']
+    data = json.loads(event['body'])
     decoded_jwt = None
     try:
         decoded_jwt = jwt.decode(event['headers']['Authorization'], 'paigeleah1')
