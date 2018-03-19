@@ -36,7 +36,8 @@ Resources:
         info:
           description: "We service API UAT"
           version: "1.0.0"
-          title: "Cliverton UAT"
+          title:
+            Ref: AWS::StackName
         basePath: "/"
         schemes:
         - "http"

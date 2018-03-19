@@ -36,7 +36,8 @@ Resources:
         info:
           description: "We service API test/development"
           version: "1.0.0"
-          title: "Cliverton Test"
+          title:
+            Ref: AWS::StackName
         basePath: "/"
         schemes:
         - "http"

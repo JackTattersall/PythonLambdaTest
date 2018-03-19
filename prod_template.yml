@@ -36,7 +36,8 @@ Resources:
         info:
           description: "We service API production."
           version: "1.0.0"
-          title: "Cliverton Production"
+          title:
+            Ref: AWS::StackName
         basePath: "/"
         schemes:
         - "http"
