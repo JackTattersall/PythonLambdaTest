@@ -1,187 +1,187 @@
 swagger: "2.0"
-        info:
-          description: "We service API test/development"
-          version: "1.0.0"
-          title: "Cliverton Test"
-        basePath: "/"
-        schemes:
-        - "http"
-        x-amazon-apigateway-request-validators:
-          full:
-            validateRequestBody: true
-            validateRequestParameters: true
-          body-only:
-            validateRequestBody: true
-            validateRequestParameters: false
-        x-amazon-apigateway-request-validator: "full"
-        paths:
-          "/prospect":
-            post:
-              tags:
-              - "prospect"
-              summary: "Create a prospect"
-              operationId: "addProspect"
-              consumes:
-              - "application/json"
-              produces:
-              - "application/json"
-              x-amazon-apigateway-request-validator: "body-only"
-              parameters:
-              - in: "body"
-                name: "body"
-                description: "Prospect object to be saved to OGI"
-                required: true
-                schema:
-                  $ref: "#/definitions/Prospect"
-              responses:
-                '200':
-                  description: Default response for CORS method
-                  headers:
-                    Access-Control-Allow-Headers:
-                      type: "string"
-                    Access-Control-Allow-Methods:
-                      type: "string"
-                    Access-Control-Allow-Origin:
-                      type: "string"
-              x-amazon-apigateway-integration:
-                httpMethod: POST
-                type: aws_proxy
-                uri:
-                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProspectFunction.Arn}/invocations
-          "/risk":
-            post:
-              tags:
-              - "risk"
-              summary: "Add policy risk to a prospect"
-              operationId: "addRisk"
-              consumes:
-              - "application/json"
-              produces:
-              - "application/json"
-              x-amazon-apigateway-request-validator: "body-only"
-              parameters:
-              - in: "body"
-                name: "body"
-                description: "Risk object to saved to a prospect"
-                required: true
-                schema:
-                  $ref: "#/definitions/Risk"
-              responses:
-                '200':
-                  description: Default response for CORS method
-                  headers:
-                    Access-Control-Allow-Headers:
-                      type: "string"
-                    Access-Control-Allow-Methods:
-                      type: "string"
-                    Access-Control-Allow-Origin:
-                      type: "string"
-              x-amazon-apigateway-integration:
-                httpMethod: POST
-                type: aws_proxy
-                uri:
-                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${RiskFunction.Arn}/invocations
-        definitions:
-          Prospect:
-            type: "object"
-            additionalProperties:
-              False
-            required:
-            - "Name"
-            - "Pcode"
-            - "Email"
-            - "Tel"
-            - "Addr1"
-            properties:
-              Name:
+  info:
+    description: "We service API test/development"
+    version: "1.0.0"
+    title: "Cliverton Test"
+  basePath: "/"
+  schemes:
+  - "http"
+  x-amazon-apigateway-request-validators:
+    full:
+      validateRequestBody: true
+      validateRequestParameters: true
+    body-only:
+      validateRequestBody: true
+      validateRequestParameters: false
+  x-amazon-apigateway-request-validator: "full"
+  paths:
+    "/prospect":
+      post:
+        tags:
+        - "prospect"
+        summary: "Create a prospect"
+        operationId: "addProspect"
+        consumes:
+        - "application/json"
+        produces:
+        - "application/json"
+        x-amazon-apigateway-request-validator: "body-only"
+        parameters:
+        - in: "body"
+          name: "body"
+          description: "Prospect object to be saved to OGI"
+          required: true
+          schema:
+            $ref: "#/definitions/Prospect"
+        responses:
+          '200':
+            description: Default response for CORS method
+            headers:
+              Access-Control-Allow-Headers:
                 type: "string"
-                minLength: 1
-                maxLength: 30
-              Pcode:
+              Access-Control-Allow-Methods:
                 type: "string"
-                minLength: 6
-                maxLength: 9
-              Email:
+              Access-Control-Allow-Origin:
                 type: "string"
-                minLength: 1
-                maxLength: 50
-              Tel:
+        x-amazon-apigateway-integration:
+          httpMethod: POST
+          type: aws_proxy
+          uri:
+            Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProspectFunction.Arn}/invocations
+    "/risk":
+      post:
+        tags:
+        - "risk"
+        summary: "Add policy risk to a prospect"
+        operationId: "addRisk"
+        consumes:
+        - "application/json"
+        produces:
+        - "application/json"
+        x-amazon-apigateway-request-validator: "body-only"
+        parameters:
+        - in: "body"
+          name: "body"
+          description: "Risk object to saved to a prospect"
+          required: true
+          schema:
+            $ref: "#/definitions/Risk"
+        responses:
+          '200':
+            description: Default response for CORS method
+            headers:
+              Access-Control-Allow-Headers:
                 type: "string"
-                minLength: 1
-                maxLength: 20
-              Addr1:
+              Access-Control-Allow-Methods:
                 type: "string"
-                minLength: 1
-                maxLength: 30
-              Addr2:
+              Access-Control-Allow-Origin:
                 type: "string"
-                minLength: 1
-                maxLength: 30
-              Addr3:
-                type: "string"
-                minLength: 1
-                maxLength: 30
-              Addr4:
-                type: "string"
-                minLength: 1
-                maxLength: 30
-          ProspectResponse:
-            type: "object"
-            properties:
-              Refno:
-                type: "string"
-              message:
-                type: "string"
-          Risk:
-            type: "object"
-            additionalProperties:
-              False
-            required:
-            - "Ptype"
-            - "Risk"
-            - "Refno"
-            properties:
-              Refno:
-                type: "string"
-                minLength: 1
-                maxLength: 7
-              Ptype:
-                type: "string"
-                enum: ["DG", "PT", "PM"]
-              Risk:
-                type: "object"
-                additionalProperties:
-                  False
-                required:
-                - "RsFrame"
-                - "RsFrame2"
-                properties:
-                  RsFrame:
-                    type: "object"
-                    additionalProperties:
-                      False
-                    properties:
-                      indemLvl:
-                        type: "string"
-                      pubLib:
-                        type: "string"
-                  RsFrame2:
-                    type: "object"
-                    additionalProperties:
-                      False
-                    properties:
-                      indemLvl:
-                        type: "string"
-                      pubLib:
-                        type: "string"
-          RiskResponse:
-            type: "object"
-            properties:
-              Refno:
-                type: "string"
-              Polref:
-                type: "string"
-              Premium:
-                type: "string"
-              message:
-                type: "string"
+        x-amazon-apigateway-integration:
+          httpMethod: POST
+          type: aws_proxy
+          uri:
+            Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${RiskFunction.Arn}/invocations
+  definitions:
+    Prospect:
+      type: "object"
+      additionalProperties:
+        False
+      required:
+      - "Name"
+      - "Pcode"
+      - "Email"
+      - "Tel"
+      - "Addr1"
+      properties:
+        Name:
+          type: "string"
+          minLength: 1
+          maxLength: 30
+        Pcode:
+          type: "string"
+          minLength: 6
+          maxLength: 9
+        Email:
+          type: "string"
+          minLength: 1
+          maxLength: 50
+        Tel:
+          type: "string"
+          minLength: 1
+          maxLength: 20
+        Addr1:
+          type: "string"
+          minLength: 1
+          maxLength: 30
+        Addr2:
+          type: "string"
+          minLength: 1
+          maxLength: 30
+        Addr3:
+          type: "string"
+          minLength: 1
+          maxLength: 30
+        Addr4:
+          type: "string"
+          minLength: 1
+          maxLength: 30
+    ProspectResponse:
+      type: "object"
+      properties:
+        Refno:
+          type: "string"
+        message:
+          type: "string"
+    Risk:
+      type: "object"
+      additionalProperties:
+        False
+      required:
+      - "Ptype"
+      - "Risk"
+      - "Refno"
+      properties:
+        Refno:
+          type: "string"
+          minLength: 1
+          maxLength: 7
+        Ptype:
+          type: "string"
+          enum: ["DG", "PT", "PM"]
+        Risk:
+          type: "object"
+          additionalProperties:
+            False
+          required:
+          - "RsFrame"
+          - "RsFrame2"
+          properties:
+            RsFrame:
+              type: "object"
+              additionalProperties:
+                False
+              properties:
+                indemLvl:
+                  type: "string"
+                pubLib:
+                  type: "string"
+            RsFrame2:
+              type: "object"
+              additionalProperties:
+                False
+              properties:
+                indemLvl:
+                  type: "string"
+                pubLib:
+                  type: "string"
+    RiskResponse:
+      type: "object"
+      properties:
+        Refno:
+          type: "string"
+        Polref:
+          type: "string"
+        Premium:
+          type: "string"
+        message:
+          type: "string"

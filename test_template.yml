@@ -36,7 +36,7 @@ Resources:
           Name: 'AWS::Include'
           # Replace <bucket> with your bucket name
           Parameters:
-            Location: s3://aws-codestar-us-east-1-853044416690-pythonlambdates-pipe/swagger.yaml
+            Location: s3://https://s3.amazonaws.com/aws-codestar-us-east-1-853044416690-pythonlambdates-pipe/pythonlambdates-Pipe/pythonlamb/swagger.yaml
   ProspectFunction:
     Type: AWS::Serverless::Function
     Properties:
