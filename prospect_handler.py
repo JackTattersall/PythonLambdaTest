@@ -1,5 +1,6 @@
 import jwt
 import json
+from os import environ
 
 
 def handler(event, context):
@@ -7,6 +8,7 @@ def handler(event, context):
     decoded_jwt = None
     try:
         decoded_jwt = jwt.decode(event['headers']['Authorization'], 'paigeleah1')
+        print(environ['bill'])
     except Exception as e:
         pass
 
