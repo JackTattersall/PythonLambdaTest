@@ -40,7 +40,7 @@ Resources:
         basePath: "/"
         schemes:
         - "http"
-        x-amazon-apigateway-request-validators :
+        x-amazon-apigateway-request-validators:
           full:
             validateRequestBody: true
             validateRequestParameters: true
