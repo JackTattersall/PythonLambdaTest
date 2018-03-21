@@ -8,6 +8,7 @@ from os import environ
 
 def handler(event, context):
     prospect = json.loads(event['body'])
+    print(event)
 
     # todo move jwt functionality into a service class to keep things dry
     try:
