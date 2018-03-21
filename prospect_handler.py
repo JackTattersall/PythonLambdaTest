@@ -20,4 +20,4 @@ def handler(event, context):
     prospect_service = ProspectService()
     api_response = prospect_service.create_prospect(prospect)
 
-    return api_response
+    return api_response.to_json()
