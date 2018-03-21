@@ -16,7 +16,7 @@ class Response:
         response_json = {
             'statusCode': self.status_code,
             'headers': self.headers,
-            'body': json.dumps(self.body)
+            'body': self.body
         }
 
         return response_json
