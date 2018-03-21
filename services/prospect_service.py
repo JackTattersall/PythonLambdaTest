@@ -9,7 +9,6 @@ class ProspectService(object):
 
     def create_prospect(self, prospect):
         try:
-            # todo make xstream function an env var
             message = self.xstream_service.create_message(FunctionTypes.CREATE_PROSPECT.value, prospect=prospect)
             service_response = self.xstream_service.process_message(message)
             api_response_body = self.xstream_service.process_response(service_response, ResponseType.PROSPECT)
