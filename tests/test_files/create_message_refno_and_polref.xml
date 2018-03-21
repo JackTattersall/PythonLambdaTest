@@ -1,0 +1,23 @@
+<xmlexecute>
+    <job>
+        <queue>1</queue>
+    </job>
+    <parameters>
+        <yzt>
+            <Char20.1>test-function</Char20.1>
+        </yzt>
+    </parameters>
+    <apmdata>
+        <prospect>
+            <p.cm>
+                <refno>BOBX01</refno>
+            </p.cm>
+        </prospect>
+    </apmdata>
+    <apmpolicy>
+        <p.py>
+            <polref>BOBX01DG01</polref>
+            <ptype></ptype>
+        </p.py>
+    </apmpolicy>
+</xmlexecute>

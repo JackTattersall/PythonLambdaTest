@@ -1,0 +1,7 @@
+<xmlreply>
+    <messages>
+        <result>Error</result>
+        <error>error number 1</error>
+        <error>error number 2</error>
+    </messages>
+</xmlreply>

@@ -1,0 +1,12 @@
+<xmlreply>
+    <messages>
+        <result>OK</result>
+    </messages>
+    <apmdata>
+        <prospect>
+            <p.cm>
+                <refno>BOBX01</refno>
+            </p.cm>
+        </prospect>
+    </apmdata>
+</xmlreply>

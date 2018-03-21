@@ -1,86 +1,135 @@
+import json
+from models.enums import ResponseType, ResponseLookup
+
 import zeep
 import xmltodict
 from os import environ
+import dpath.util as dict_xpath
 
 
-class XStreamMessageService:
+class XStreamMessageService(object):
     """
     Entry point for parsing json(dict) data into a valid XStream schema
     """
-    def __init__(self):
-        self.template = {
-            'xmlexecute': {
-                'job': {
-                    'queue': '1'
-                },
-                'parameters': {
-                    'yzt': {
-                        'Char20.1': None
-                    }
-                },
-                'apmdata': {
-                    'prospect': {
-                        'p.cm': None
-                    }
-                },
-                'apmpolicy': {
-                    'p.py': {
-                        'Ptype': None
+    @staticmethod
+    def create_message(xstream_function: str, refno='', ptype='', polref='', prospect=None, risk=None) -> str:
+        print('Info: creating xstream message')
+
+        try:
+
+            template = {
+                'xmlexecute': {
+                    'job': {
+                        'queue': '1'
+                    },
+                    'parameters': {
+                        'yzt': {
+                            'Char20.1': xstream_function
+                        }
+                    },
+                    'apmdata': {
+                        'prospect': {
+                            'p.cm': prospect or {'refno': refno}
+                        }
+                    },
+                    'apmpolicy': {
+                        'p.py': {
+                            'polref': polref,
+                            'ptype': ptype
+                        }
                     }
                 }
             }
-        }
 
-    def _add_apm(self, json: dict):
-        self.template['xmlexecute']['apmdata']['prospect']['p.cm'] = json
+            if risk:
+                for risk_frame, risk_fields in risk.items():
+                    dict_xpath.new(template, 'xmlexecute/apmpolicy/{}'.format(risk_frame), risk_fields)
 
-    def _add_policy_type(self, policy_type: str):
-        self.template['xmlexecute']['apmpolicy']['p.py']['Ptype'] = policy_type
+            parsed_template = xmltodict.unparse(template, full_document=False)
+        except Exception as e:
+            print('Error: error in create_message - {}'.format(e))
+            raise Exception(e)
 
-    def _add_risk_data(self, risk_data: dict):
-        for risk_frame, values in risk_data.items():
-            self.template['xmlexecute']['apmpolicy'][risk_frame] = values
-
-    def _add_polref(self, polref: str):
-        self.template['xmlexecute']['apmpolicy']['p.py']['Polref'] = polref
-
-    def _add_ref(self, ref: str):
-        self._add_apm({'Refno': ref})
-
-    def _add_function_type(self, function_type: str):
-        self.template['xmlexecute']['parameters']['yzt']['char20.1'] = function_type
-
-    def _parse_to_xml(self):
-        parsed_dict = xmltodict.unparse(self.template, full_document=False)
-        return parsed_dict
+        return parsed_template
 
     @staticmethod
-    def post(message: str) -> str:
-        client = zeep.Client(wsdl='https://openinterchange.openecommerce.co.uk/OpenInterchange/OpenInterchange?wsdl')
-        response = client.service.processMessage(
-            environ[''], environ[''], environ[''], environ[''], environ[''], message, 0)
+    def process_message(message: str) -> str:
+        print('Info: Processing message')
+
+        # todo add wsdl url and auth tokens to env var
+        try:
+            client = zeep.Client(
+                wsdl='https://openinterchange.openecommerce.co.uk/OpenInterchange/OpenInterchange?wsdl'
+            )
+
+            response = client.service.processMessage(
+                environ['messageType'],
+                environ['branch'],
+                environ['marsReference'],
+                environ['bNumber'],
+                environ['licenseKey'],
+                message,
+                int(environ['timeout'])
+            )
+        except Exception as e:
+            print('Error: Posting to xstream failed - {}'.format(e))
+            raise Exception(e)
+
         return response
 
-    def process_response(self):
-        pass
+    @staticmethod
+    def process_response(response: str, response_type: ResponseType) -> str:
+        print('Info: Processing response for {}'.format(response_type.value))
 
-    def create_prospect_message(self, prospect_json: dict):
-        self._add_apm(prospect_json)
-        self._add_function_type('create-cliv-prospect')
-        prospect_message = self._parse_to_xml()
-        return prospect_message
+        parsed_response = xmltodict.parse(response)
 
-    def create_risk_message(self, policy_json: dict):
-        self._add_ref(policy_json['Ref'])
-        self._add_policy_type(policy_json['Ptype'])
-        self._add_risk_data(policy_json['Risk'])
-        self._add_function_type('create-cliv-policy')
-        risk_message = self._parse_to_xml()
-        return risk_message
+        response_status = dict_xpath.get(parsed_response, ResponseLookup.RESPONSE_STATUS.value).lower()
 
-    def create_transaction_message(self, transaction_json: dict):
-        self._add_ref(transaction_json['Ref'])
-        self._add_polref(transaction_json['Polref'])
-        self._add_function_type('cliv_transfer')
-        transaction_message = self._parse_to_xml()
-        return transaction_message
+        client_response_body = {}
+
+        if response_status == 'ok':
+
+            if response_type == ResponseType.PROSPECT:
+                try:
+                    client_response_body['refno'] = dict_xpath.get(parsed_response, ResponseLookup.REFNO.value)
+                except KeyError as e:
+                    print('Error: key error on xml response, has the xstream response model changed? - {}'.format(e))
+                    raise KeyError(e)
+
+            if response_type == ResponseType.RISK:
+                try:
+                    client_response_body['polref'] = dict_xpath.get(parsed_response, ResponseLookup.POLREF.value)
+                    client_response_body['refno'] = dict_xpath.get(parsed_response, ResponseLookup.REFNO.value)
+                    client_response_body['premium'] = dict_xpath.get(parsed_response, ResponseLookup.PREMIUM.value)
+                except KeyError as e:
+                    print('Error: key error on xml response, has the xstream response model changed? - {}'.format(e))
+                    raise KeyError(e)
+
+            if response_type == ResponseType.TRANSACTION:
+                try:
+                    client_response_body['client_ref'] = dict_xpath.get(
+                        parsed_response, ResponseLookup.CLIENT_REF.value
+                    )
+                except KeyError as e:
+                    print('Error: key error on xml response, has the xstream response model changed? - {}'.format(e))
+                    raise KeyError(e)
+
+        elif response_status == 'error':
+
+            try:
+                errors = dict_xpath.get(parsed_response, ResponseLookup.ERRORS.value)
+                print('Error: xstream responded with errors {}'.format(errors))
+            except KeyError as e:
+                print('Error: key error on xml response, has the xstream response model changed? - {}'.format(e))
+
+            raise Exception()
+
+        else:
+            print('Error: xstream response contains unknown response status {}'.format(response_status))
+            raise Exception()
+
+        return json.dumps(client_response_body)
+
+
+class PremiumFinanceGateway(object):
+    pass

@@ -1,0 +1,20 @@
+<xmlreply>
+    <messages>
+        <result>OK</result>
+    </messages>
+    <apmdata>
+        <prospect>
+            <p.cm>
+                <refno>BOBX001</refno>
+            </p.cm>
+        </prospect>
+        <apmpolicy>
+            <p.py>
+                <polref>BOBX001DG1</polref>
+            </p.py>
+            <cs01>
+                <Total.prem>10000</Total.prem>
+            </cs01>
+        </apmpolicy>
+    </apmdata>
+</xmlreply>
