@@ -1,4 +1,4 @@
-from models.enums import ResponseType, FunctionTypes
+from models.enums import ResponseType, FunctionTypes, ErrorResponses
 from services.soap_client import XStreamMessageService
 from models.response import Response
 
@@ -15,6 +15,6 @@ class ProspectService(object):
             api_response = Response(api_response_body, status_code=200)
         except Exception as e:
             print('Error: create_prospect failed - {}'.format(e))
-            api_response = Response('Internal server error', status_code=500)
+            api_response = Response(ErrorResponses.INTERNAL_SERVER_ERROR.value, status_code=500)
 
         return api_response

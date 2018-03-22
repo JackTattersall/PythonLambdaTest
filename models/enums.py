@@ -20,3 +20,8 @@ class FunctionTypes(Enum):
     CREATE_PROSPECT = 'create-cliv-prospect'
     CREATE_RISK = 'create-cliv-policy'
     TRANSACT = 'cliv-transfer'
+
+
+class ErrorResponses(Enum):
+    INTERNAL_SERVER_ERROR = "{'message': 'Internal server error}"
+    NOT_AUTHORIZED = "{'message': 'Not authorized}"
