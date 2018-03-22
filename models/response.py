@@ -7,7 +7,7 @@ class Response:
         self.status_code = status_code
         self.headers = {
             'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '194.176.64.84',
+            'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'OPTION,POST',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization'
         }
