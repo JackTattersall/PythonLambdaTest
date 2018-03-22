@@ -17,6 +17,7 @@ def handler(event, context):
         jwt.decode(event['headers']['Authorization'], 'paigeleah1')
     except Exception as e:
         print('Error: jwt did not decode correctly - {}'.format(e))
+        # todo refactor Response, it ain't pretty atm
         return Response(ErrorResponses.NOT_AUTHORIZED.value, status_code=401).to_json()
 
     prospect_service = ProspectService()

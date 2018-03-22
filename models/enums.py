@@ -23,5 +23,5 @@ class FunctionTypes(Enum):
 
 
 class ErrorResponses(Enum):
-    INTERNAL_SERVER_ERROR = "{'message': 'Internal server error}"
-    NOT_AUTHORIZED = "{'message': 'Not authorized}"
+    INTERNAL_SERVER_ERROR = "{'message': 'Internal server error'}"
+    NOT_AUTHORIZED = "{'message': 'Not authorized'}"
