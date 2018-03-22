@@ -79,8 +79,13 @@ Resources:
                     Access-Control-Allow-Origin:
                       type: "string"
               x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: 200
                 httpMethod: POST
+                passthroughBehavior: when_no_match
                 type: aws_proxy
+
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProspectFunction.Arn}/invocations
           "/risk":
