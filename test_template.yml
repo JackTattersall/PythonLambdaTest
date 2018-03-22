@@ -10,7 +10,7 @@ Parameters:
 
 Globals:
   Api:
-    Cors: "'www.resttesttest.com'"
+    Cors: "'194.176.64.84'"
     MethodSettings: [{
       # Turn on Info logging
 #      "LoggingLevel": "INFO",
