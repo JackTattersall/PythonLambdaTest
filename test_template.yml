@@ -10,7 +10,7 @@ Parameters:
 
 Globals:
   Api:
-    Cors: "'194.176.64.84'"
+#    Cors: "'194.176.64.84'"
     MethodSettings: [{
       # Turn on Info logging
 #      "LoggingLevel": "INFO",
@@ -112,8 +112,6 @@ Resources:
                       method.response.header.Access-Control-Allow-Headers: "'Content-Type, Authorization'"
                       method.response.header.Access-Control-Allow-Methods: "'POST'"
                       method.response.header.Access-Control-Allow-Origin: "'194.176.64.84'"
-                    responseTemplates:
-                      application/json: '{}'
                 httpMethod: POST
                 passthroughBehavior: when_no_match
                 type: aws_proxy
