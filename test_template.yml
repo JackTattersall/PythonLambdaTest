@@ -102,7 +102,7 @@ Resources:
                   $ref: "#/definitions/Prospect"
               responses:
                 '200':
-                  description: Default response for CORS method
+                  description: Returns prospect reference number
                   headers:
                     Access-Control-Allow-Headers:
                       type: "string"
@@ -110,7 +110,9 @@ Resources:
                       type: "string"
                     Access-Control-Allow-Origin:
                       type: "string"
-                '405':
+                  schema:
+                    $ref: "#/definitions/ProspectResponse"
+                '401':
                   description: 'Unauthorized'
               x-amazon-apigateway-integration:
                 responses:
@@ -126,6 +128,29 @@ Resources:
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ProspectFunction.Arn}/invocations
           "/risk":
+            options:
+              summary: CORS support
+              description: |
+                Enable CORS by returning correct headers
+              consumes:
+                - application/json
+              produces:
+                - application/json
+              tags:
+                - CORS
+              x-amazon-apigateway-integration:
+                type: mock
+                requestTemplates:
+                  application/json: '{ "statusCode" : 200 }'
+                responses:
+                  'default':
+                    statusCode: '200'
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+                      method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                    responseTemplates:
+                      application/json: '{}'
             post:
               tags:
               - "risk"
@@ -145,7 +170,7 @@ Resources:
                   $ref: "#/definitions/Risk"
               responses:
                 '200':
-                  description: Default response for CORS method
+                  description: Returns prospect reference number, policy reference number and premium quote
                   headers:
                     Access-Control-Allow-Headers:
                       type: "string"
@@ -153,8 +178,20 @@ Resources:
                       type: "string"
                     Access-Control-Allow-Origin:
                       type: "string"
+                  schema:
+                    $ref: "#/definitions/RiskResponse"
+                '401':
+                  description: 'Unauthorized'
               x-amazon-apigateway-integration:
+                responses:
+                  'default':
+                    statusCode: '200'
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+                      method.response.header.Access-Control-Allow-Methods: "'POST'"
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
                 httpMethod: POST
+                passthroughBehavior: when_no_match
                 type: aws_proxy
                 uri:
                   Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${RiskFunction.Arn}/invocations
@@ -207,8 +244,6 @@ Resources:
             properties:
               Refno:
                 type: "string"
-              message:
-                type: "string"
           Risk:
             type: "object"
             additionalProperties:
@@ -259,8 +294,6 @@ Resources:
               Polref:
                 type: "string"
               Premium:
-                type: "string"
-              message:
                 type: "string"
   ProspectFunction:
     Type: AWS::Serverless::Function
